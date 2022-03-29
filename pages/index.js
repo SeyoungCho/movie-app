@@ -4,19 +4,25 @@ import Seo from "../components/Seo";
 const API_KEY = "dbe5237965f144dae7ac54cf7996306a";
 
 export default function Home(){
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState();
   useEffect(()=>{
     (async () =>{
-      const data = await (await fetch(
+      const {results} = await (
+        await fetch(
         `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`
       )).json();
+      setMovies(results);
     })();
-    console.log(data)
   }, []);
   return (
     <div>
       <Seo title="Home" />
-      <h1 className="active">Hello</h1>
+      {!movies && <h4>Loading...</h4>}
+      {movies?.map((movie)=> (
+        <div key={movie.id}>
+          <h4>{movie.original_title}</h4>
+        </div>
+      ))}
     </div>
   );
 }
