@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react/cjs/react.production.min";
+import { useEffect, useState } from "react";
 import Seo from "../components/Seo";
 
 const API_KEY = "dbe5237965f144dae7ac54cf7996306a";
