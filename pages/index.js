@@ -1,24 +1,13 @@
 import { useEffect, useState } from "react";
 import Seo from "../components/Seo";
 
-const API_KEY = "dbe5237965f144dae7ac54cf7996306a";
-
-export default function Home(){
-  const [movies, setMovies] = useState();
-  useEffect(()=>{
-    (async () =>{
-      const {results} = await (
-        await fetch(
-        `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`
-      )).json();
-      setMovies(results);
-    })();
-  }, []);
+export default function Home({results}){
+  
   return (
     <div className="container">
       <Seo title="Home" />
-      {!movies && <h4>Loading...</h4>}
-      {movies?.map((movie) => (
+      {!results && <h4>Loading...</h4>}
+      {results?.map((movie) => (
         <div className="movie" key={movie.id}>
           <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
           <h4>{movie.original_title}</h4>
@@ -31,8 +20,13 @@ export default function Home(){
           padding: 20px;
           gap: 20px;
         }
+        .movie { 
+          display:flex;
+          flex-direction: column;
+          align-items: center;
+        }
         .movie img {
-          max-width: 100%;
+          max-width: 80%;
           border-radius: 12px;
           transition: transform 0.2s ease-in-out;
           box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
@@ -47,4 +41,18 @@ export default function Home(){
       `}</style>
     </div>
   );
+}
+
+export async function getServerSideProps(){
+  /* This code only runs on the server */
+  /* Never happens in the client side */
+  const {results} = await (
+    await fetch(
+    `http://localhost:3000/api/movies`
+  )).json();
+  return {
+    props:{
+      results,
+    }
+  }
 }
