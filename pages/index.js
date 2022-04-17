@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import Seo from "../components/Seo";
 
 export default function Home({results}){
-  
+ 
   return (
     <div className="container">
       <Seo title="Home" />
-      {!results && <h4>Loading...</h4>}
+      
       {results?.map((movie) => (
         <div className="movie" key={movie.id}>
           <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
@@ -46,13 +46,12 @@ export default function Home({results}){
 export async function getServerSideProps(){
   /* This code only runs on the server */
   /* Never happens in the client side */
-  const {results} = await (
-    await fetch(
-    `http://localhost:3000/api/movies`
-  )).json();
+  const { results } = await (
+    await fetch(`http://localhost:3000/api/movies`))
+    .json();
   return {
     props:{
       results,
-    }
-  }
+    },
+  };
 }
