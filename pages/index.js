@@ -24,6 +24,7 @@ export default function Home({results}){
           display:flex;
           flex-direction: column;
           align-items: center;
+          cursor:pointer;
         }
         .movie img {
           max-width: 80%;
